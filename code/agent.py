@@ -33,6 +33,16 @@ class RandomAgent(BaseAgent):
 		pass
 
 
+# class OptimalAgent(BaseAgent):
+#     def __init__(self):
+#         markovDecision()
+
+#     def select_action(self, state):
+#         pass
+
+#     def update(self, state, action, reward, next_state):
+#         pass
+
 class QLearningAgent(BaseAgent):
 	def __init__(self):
 		pass
