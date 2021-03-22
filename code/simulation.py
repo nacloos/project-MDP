@@ -1,10 +1,10 @@
-from snakes_and_ladders import SnakesAndLaddersSim
-from agent import RandomAgent
+from snakes_and_ladders import SnakesAndLaddersSim, SECURITY_DICE, NORMAL_DICE, RISKY_DICE
+from agent import ConstantAgent
 
 
 def simulate(layout, circle):
     env = SnakesAndLaddersSim(layout, circle)
-    agent = RandomAgent(env.action_space)
+    agent = ConstantAgent(SECURITY_DICE)
 
     n_episodes = 50
 
@@ -16,8 +16,6 @@ def simulate(layout, circle):
             next_state, reward, done = env.step(action)
 
             agent.update(state, action, reward, next_state)
-
-            state = next_state
 
 
 if __name__ == '__main__':

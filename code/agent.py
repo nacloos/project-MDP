@@ -29,8 +29,13 @@ class RandomAgent(BaseAgent):
 	def select_action(self, state):
 		return np.random.choice(self.action_space)
 
-	def update(self, state, action, reward, next_state):
-		pass
+
+class ConstantAgent(BaseAgent):
+    def __init__(self, action):
+        self.action = action
+
+    def select_action(self, state):
+        return self.action
 
 
 # class OptimalAgent(BaseAgent):
@@ -38,9 +43,6 @@ class RandomAgent(BaseAgent):
 #         markovDecision()
 
 #     def select_action(self, state):
-#         pass
-
-#     def update(self, state, action, reward, next_state):
 #         pass
 
 class QLearningAgent(BaseAgent):

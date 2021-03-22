@@ -25,10 +25,12 @@ class SnakesAndLaddersProb:
         self.layout = layout
         self.circle = circle
 
-        self.action_space = [SECURITY_DICE, NORMAL_DICE, RISKY_DICE]
+        # self.action_space = [SECURITY_DICE]
+        self.action_space = [SECURITY_DICE, NORMAL_DICE]
+        # self.action_space = [SECURITY_DICE, NORMAL_DICE, RISKY_DICE]
         
         self.n_states = len(layout)
-        self.R = -np.ones(self.n_states) # reward of -1 for each state expected the last one
+        self.R = -np.ones(self.n_states) # reward of -1 for each state excepted the last one
         self.R[-1] = 0
 
 
@@ -89,6 +91,7 @@ class SnakesAndLaddersProb:
 
     def traps(self, P):
         next_states = np.argwhere(P != 0).reshape(-1) # all the possible next states
+        r = -1 # mean reward
 
         for next_s in next_states:
             if self.layout[next_s] == RESTART_TRAP:
@@ -99,7 +102,7 @@ class SnakesAndLaddersProb:
                 if next_s >= 3:
                     # check if don't cross the junction
                     if next_s >= FAST_LANE_START and next_s-3 < FAST_LANE_START:
-                        P[next_s-13] += P[next_s]
+                        P[next_s-10] += P[next_s]
                     else:
                         P[next_s-3] += P[next_s]
                 else:
@@ -107,13 +110,13 @@ class SnakesAndLaddersProb:
                 P[next_s] = 0
 
             elif self.layout[next_s] == PRISON_TRAP:
-                pass
+                r = (1-P[next_s])*(-1) + P[next_s]*(-2)
 
             elif self.layout[next_s] == GAMBLE_TRAP:
-                P *= 1/self.n_states*1/P[next_s]
-                P[next_s] = 0
+                P += P[next_s]*1/self.n_states
+                P[next_s] = P[next_s]*1/self.n_states
 
-        return P, 0
+        return P, r
 
 
 # def p_security(s, circle):
