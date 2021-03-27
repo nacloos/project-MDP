@@ -96,6 +96,9 @@ class SnakesAndLaddersProb:
         r = -1 # mean reward
 
         for next_s in next_states:
+            if next_s == FINAL_STATE or next_s == START_STATE:
+                continue
+
             if self.layout[next_s] == RESTART_TRAP:
                 if next_s > 0:
                     P[0] += P[next_s]

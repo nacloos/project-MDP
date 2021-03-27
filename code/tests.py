@@ -6,17 +6,17 @@ from snakes_and_ladders import SnakesAndLaddersProb, SECURITY_DICE, NORMAL_DICE,
 
 
 layouts = [
-    # np.zeros(15),
-    # np.array([1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
-    # np.array([2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
-    # np.array([0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
-    # np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0]),
-    # np.array([4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
+    np.zeros(15),
+    np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
+    np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
+    np.array([0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
+    np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0]),
+    np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]),
     np.array([0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0]),
     np.array([0, 2, 0, 2, 0, 2, 0, 0, 0, 0, 0, 2, 0, 2, 0]),
-    np.array([1, 2, 0, 1, 1, 2, 0, 2, 1, 0, 1, 2, 2, 1, 1]),
-    np.array([4, 0, 4, 4, 0, 0, 0, 4, 0, 0, 0, 4, 4, 0, 0]),
-    np.array([1, 3, 1, 4, 2, 0, 1, 4, 2, 3, 0, 4, 1, 0, 2])
+    np.array([0, 2, 0, 1, 1, 2, 0, 2, 1, 0, 1, 2, 2, 1, 0]),
+    np.array([0, 0, 4, 4, 0, 0, 0, 4, 0, 0, 0, 4, 4, 0, 0]),
+    np.array([0, 3, 1, 4, 2, 0, 1, 4, 2, 3, 0, 4, 1, 0, 0])
 ]
 
 def test_prob(layout, dice):
@@ -53,7 +53,7 @@ def test_prob(layout, dice):
             print("\nAdrien: row not summing to 1 for state {}".format(s))
             print(*P3[s])
 
-        if not np.allclose(P1[s], P2[s]) or not np.allclose(P1[s], P3[s], atol=0.1) or not np.allclose(P2[s], P3[s], atol=0.1):
+        if not np.allclose(P1[s], P2[s]) or not np.allclose(P1[s], P3[s], atol=0.05) or not np.allclose(P2[s], P3[s], atol=0.05):
             print("\nNot the same transition probability for state {}:".format(s))
             print("Radia:", *P1[s])
             print("Nathan:", *P2[s])

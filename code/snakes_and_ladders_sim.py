@@ -52,7 +52,7 @@ class SnakesAndLaddersSim:
                     self.current_state += squares    
         else:
             next_state = self.current_state + squares
-            if (next_state > 9) & (self.current_state <= 9): # manage gap between 10 and 15
+            if (next_state > 9) and (self.current_state <= 9): # manage gap between 10 and 15
                 next_state += 4
             if self.circle & (next_state > FINAL_STATE): # manage after last state if circle
                 self.reward += 1
@@ -66,9 +66,10 @@ class SnakesAndLaddersSim:
         if self.layout[self.current_state] == RESTART_TRAP:
             self.current_state = START_STATE
         elif self.layout[self.current_state] == PENALTY_TRAP:
-            if self.current_state in [9, 10, 11]:
-                self.current_state -= 9
-            self.current_state -= 3
+            if self.current_state in [10, 11, 12]:
+                self.current_state -= 10
+            else:
+                self.current_state -= 3
             if self.current_state < 0:
                 self.current_state = 0
         elif self.layout[self.current_state] == PRISON_TRAP:
@@ -93,9 +94,9 @@ class SnakesAndLaddersSim:
             squares = np.random.randint(4)
             trap_chance = 0
 
-        self.movement(squares) 
+        self.movement(squares)
         # active the trap with certain proba according to the dice
-        if (trap_chance == 0) & (self.current_state <= FINAL_STATE):
+        if (trap_chance == 0) and (self.current_state < FINAL_STATE):
             self.trap()
         done = self.current_state >= FINAL_STATE
 
