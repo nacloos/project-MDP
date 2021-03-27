@@ -68,7 +68,8 @@ class SnakesAndLaddersSim:
         elif self.layout[self.current_state] == PENALTY_TRAP:
             if self.current_state in [9, 10, 11]:
                 self.current_state -= 10
-            self.current_state -= 3
+            else:
+                self.current_state -= 3
             if self.current_state < 0:
                 self.current_state = 0
         elif self.layout[self.current_state] == PRISON_TRAP:
