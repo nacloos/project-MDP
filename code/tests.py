@@ -3,7 +3,7 @@ import numpy as np
 from snakes_and_ladders import SnakesAndLaddersProb, SECURITY_DICE, NORMAL_DICE, RISKY_DICE
 import transition_prob
 import simulation
-from value_iteration import 
+# from value_iteration import 
 
 
 layouts = [

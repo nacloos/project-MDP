@@ -70,18 +70,20 @@ class SnakesAndLaddersProb:
 
         P = np.zeros(self.n_states)
 
-        if s != JUNCTION_STATE:
+        if s == FINAL_STATE:
+            P[s] = 1
+        elif s != JUNCTION_STATE:
             for i in range(max_steps+1):
                 if dist_from_final(s)-i > 0:
                     # just move forward
                     P[s+i] = 1/(max_steps+1)
-                elif not self.circle or s+i == FINAL_STATE:
+                elif not self.circle or dist_from_final(s) == i:
                     # don't circle or if circle, stop on the final state
                     P[FINAL_STATE] += 1/(max_steps+1)
                 else:
                     # circle and go over the final state
                     # P[i-dist_from_final(s)-1] = 1/(max_steps+1) # come back at the beginning
-                    P[START_STATE] = 1/(max_steps+1) # come back at the beginning
+                    P[START_STATE] += 1/(max_steps+1) # come back at the beginning
 
         else:
             P[JUNCTION_STATE] = 1/(max_steps+1) # don't move

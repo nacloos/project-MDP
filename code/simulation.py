@@ -54,8 +54,7 @@ def estimate_prob(layout, circle, dice, n_episodes=int(5e3)):
 
     # visited = np.argwhere(count[:-1] != 0)
     proba[:-1] /= count[:-1]
-    if not circle:
-        proba[-1,-1] = 1.0 # state 14 is absorbing
+    proba[-1,-1] = 1.0 # state 14 is absorbing
     return proba
 
 
