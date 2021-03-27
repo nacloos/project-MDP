@@ -47,7 +47,6 @@ def estimate_prob(layout, circle, dice, n_episodes=int(5e3)):
         while not done:
             action = agent.select_action(state)
             next_state, reward, done = env.step(action)
-            
             if next_state <= 14:
                 proba[state, next_state] += 1
             count[state] += 1
