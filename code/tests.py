@@ -35,7 +35,7 @@ def test_prob(layout, dice):
 
     P3 = simulation.estimate_prob(layout, circle, dice, n_episodes=int(1e4))
     # P3 = P2
-    P1 = P2
+    # P1 = P2
 
     passed = True
     for s in range(15):
