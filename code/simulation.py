@@ -58,8 +58,6 @@ def estimate_prob(layout, circle, dice, n_episodes=int(5e3)):
     return proba
 
 
-
-
 if __name__ == '__main__':
     layout = np.zeros(15)
     circle = False
