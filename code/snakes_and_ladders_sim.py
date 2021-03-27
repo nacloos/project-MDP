@@ -39,8 +39,9 @@ class SnakesAndLaddersSim:
         """
         Restart the game
         """
-        self.current_state = START_STATE
-        return START_STATE
+        start = np.random.randint(14)
+        self.current_state = start
+        return start
 
     def movement(self, squares):
         if self.current_state == JUNCTION_STATE: # manage junction
