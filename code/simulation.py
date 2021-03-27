@@ -3,15 +3,43 @@ from agent import ConstantAgent
 import numpy as np
 
 
-def simulate(layout, circle):
-    env = SnakesAndLaddersSim(layout, circle)
-    # agent = ConstantAgent(SECURITY_DICE)
-    agent = ConstantAgent(NORMAL_DICE)
 
-    n_episodes = 5000
+def estimate_cost(layout, circle, agent, n_episodes=int(1e4)):
+    # first-visit monte carlo
+    env = SnakesAndLaddersSim(layout, circle)
+
+    V = np.zeros(15)
+
+    for episode in range(1,n_episodes+1):
+        visited = np.zeros(15, dtype=np.bool) # true if state already visited in the current episode 
+        cum_reward = np.zeros(15) # sum of rewards, starting at state first visit
+
+        state = env.reset()
+        visited[state] = True
+
+        done = False
+        while not done:
+            action = agent.select_action(state)
+            next_state, reward, done = env.step(action)
+
+            cum_reward[visited] += reward       
+            if next_state <= 14 and not visited[next_state]:
+                visited[next_state] = True
+
+            state = next_state                
+        
+        V[visited] += 1/episode*(cum_reward[visited] - V[visited])
+
+    C = -V[:-1]
+    return C
+    
+
+def estimate_prob(layout, circle, dice, n_episodes=int(5e3)):
+    env = SnakesAndLaddersSim(layout, circle)
+    agent = ConstantAgent(dice)
+
     proba = np.zeros((15, 15))
     count = np.zeros((15, 1))
-    tot_reward = np.zeros((15))
 
     for episode in range(n_episodes):
         state = env.reset()
@@ -19,18 +47,22 @@ def simulate(layout, circle):
         while not done:
             action = agent.select_action(state)
             next_state, reward, done = env.step(action)
-            if next_state <= len(proba)-1:
+            
+            if next_state <= 14:
                 proba[state, next_state] += 1
-                count[state] += 1
-            state = next_state
-            # agent.update(state, action, reward, next_state)
+            count[state] += 1
+            state = next_state                
 
-    proba /= count
-    print(proba)
-    print(proba[2, 10])
-    print(proba[2, 2])
+    proba[:-1] /= count[:-1]
+    proba[-1,-1] = 1.0 # state 14 is absorbing
+    return proba
+
+
 
 
 if __name__ == '__main__':
     layout = np.zeros(15)
-    simulate(layout, False)
+    circle = False
+    agent = ConstantAgent(SECURITY_DICE)
+    C = estimate_cost(layout, circle, agent)
+    print(C)

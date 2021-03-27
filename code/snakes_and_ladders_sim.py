@@ -16,6 +16,7 @@ PENALTY_TRAP = 2
 PRISON_TRAP = 3
 GAMBLE_TRAP = 4
 
+
 class SnakesAndLaddersSim:
     """
     Simulation of the Snakes and Ladders game.

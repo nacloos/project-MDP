@@ -41,7 +41,7 @@ class SnakesAndLaddersProb:
 
         elif a == NORMAL_DICE:
             P = self.move(s, 2)
-            P_trap, r_trap = self.traps(P)
+            P_trap, r_trap = self.traps(P.copy()) # transition prob if would always trigger traps
             P = P/2 + P_trap/2
             r = self.R[s]/2 + r_trap/2 # TODO return the expected reward ?
             return P, r
@@ -60,8 +60,10 @@ class SnakesAndLaddersProb:
             if s >= FINAL_STATE:
                 return 0
             elif s >= FAST_LANE_START: 
+                # on the fast lane
                 return FINAL_STATE-s
-            elif s > JUNCTION_STATE and s < FAST_LANE_START: 
+            elif s > JUNCTION_STATE and s < FAST_LANE_START:
+                # on the slow lane 
                 return FINAL_STATE-s-4
             else: 
                 return 7-s  
@@ -70,7 +72,7 @@ class SnakesAndLaddersProb:
 
         if s != JUNCTION_STATE:
             for i in range(max_steps+1):
-                if dist_from_final(s+i) > 0:
+                if dist_from_final(s)-i > 0:
                     # just move forward
                     P[s+i] = 1/(max_steps+1)
                 elif not self.circle or s+i == FINAL_STATE:
@@ -95,8 +97,9 @@ class SnakesAndLaddersProb:
 
         for next_s in next_states:
             if self.layout[next_s] == RESTART_TRAP:
-                P[0] += P[next_s]
-                P[next_s] = 0
+                if next_s > 0:
+                    P[0] += P[next_s]
+                    P[next_s] = 0
 
             elif self.layout[next_s] == PENALTY_TRAP:
                 if next_s >= 3:
@@ -105,16 +108,20 @@ class SnakesAndLaddersProb:
                         P[next_s-10] += P[next_s]
                     else:
                         P[next_s-3] += P[next_s]
+                    P[next_s] = 0
                 else:
-                    P[0] += P[next_s]
-                P[next_s] = 0
+                    p_temp = P[next_s]
+                    P[next_s] = 0
+                    P[0] += p_temp
+
 
             elif self.layout[next_s] == PRISON_TRAP:
                 r = (1-P[next_s])*(-1) + P[next_s]*(-2)
 
             elif self.layout[next_s] == GAMBLE_TRAP:
-                P += P[next_s]*1/self.n_states
-                P[next_s] = P[next_s]*1/self.n_states
+                p_temp = P[next_s]
+                P[next_s] = 0
+                P += p_temp*1/self.n_states # In-place modification of P !
 
         return P, r
 
@@ -133,43 +140,6 @@ class SnakesAndLaddersProb:
     #     P[s+1] = 1/2
 
     # return P, R[s]
-
-
-
-class SnakesAndLaddersSim:
-    """
-    Simulation of the Snakes and Ladders game.
-    """
-    def __init__(self, layout, circle):
-        """
-        Create a Snakes and Ladders game
-        :param layout: layout of the game (see project instructions)
-        :param circle: boolean, true if the player must land exactly on the final square to win
-        """
-        self.state_space = list(range(1, 16)) # the squares of the game
-        self.action_space = [SECURITY_DICE, NORMAL_DICE, RISKY_DICE]
-        
-
-    def reset(self):
-        """
-        Restart the game
-        """
-        self.state = START_STATE
-
-
-    def step(self, action):
-        """
-        Perform one action in the environment
-        :param action: action taken by the agent
-        :return: next state, reward, a boolean which is true when the game is over
-        """
-        if action == SECURITY_DICE:
-            roll = np.random.randint(2)
-            if roll == 1:
-                self.state += 1 
-            pass
-
-        return self.state_space[0], 0, True
 
 
 

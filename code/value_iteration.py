@@ -17,7 +17,8 @@ def markovDecision(layout, circle, tol=1e-9):
                 P, r = env.p(s, a) # transition probabilities and reward
                 Q[i] = np.dot(P, r + V) # E[R + V(s')|s,a]
 
-            new_V[s] = np.max(Q)
+            # new_V[s] = np.max(Q)
+            new_V[s] = Q[0]
             
         if np.max(np.abs(new_V-V)) > tol:
             V = new_V
@@ -39,8 +40,8 @@ if __name__ == '__main__':
     # layout[3] = 2
     # layout[5] = 1
     # layout[10] = 3
-    # C = markovDecision(layout, False)
-    # print(C)
+    C = markovDecision(layout, False)
+    print(C)
 
 
-    print(print_proba(layout, False))
+    # print(print_proba(layout, False))
