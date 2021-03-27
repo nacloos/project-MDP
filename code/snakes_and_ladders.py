@@ -80,7 +80,8 @@ class SnakesAndLaddersProb:
                     P[FINAL_STATE] += 1/(max_steps+1)
                 else:
                     # circle and go over the final state
-                    P[i-dist_from_final(s)-1] = 1/(max_steps+1) # come back at the beginning
+                    # P[i-dist_from_final(s)-1] = 1/(max_steps+1) # come back at the beginning
+                    P[START_STATE] = 1/(max_steps+1) # come back at the beginning
 
         else:
             P[JUNCTION_STATE] = 1/(max_steps+1) # don't move
