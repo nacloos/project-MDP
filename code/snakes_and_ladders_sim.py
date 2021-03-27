@@ -57,6 +57,7 @@ class SnakesAndLaddersSim:
                 next_state += 4
             if self.circle & (next_state > FINAL_STATE): # manage after last state if circle
                 self.reward += 1
+                self.current_state = START_STATE
             else:
                 if next_state > FINAL_STATE: # only consider to finish if not circle
                     self.current_state = FINAL_STATE
