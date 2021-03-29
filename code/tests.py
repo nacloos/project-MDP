@@ -1,8 +1,9 @@
 import numpy as np
 
+from snakes_and_ladders import SnakesAndLaddersProb, SECURITY_DICE, NORMAL_DICE, RISKY_DICE
 import transition_prob
 import simulation
-from snakes_and_ladders import SnakesAndLaddersProb, SECURITY_DICE, NORMAL_DICE, RISKY_DICE
+# from value_iteration import 
 
 
 layouts = [
@@ -56,7 +57,9 @@ def test_prob(layout, circle, dice):
     return passed
 
 
-# def test_cost(layout, dice)
+# def test_cost(layout, circle, dice):
+#     C = markovDecision(layout, circle)
+
 
 if __name__ == '__main__':
     for i, layout in enumerate(layouts):
