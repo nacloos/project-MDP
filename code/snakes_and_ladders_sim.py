@@ -21,7 +21,7 @@ class SnakesAndLaddersSim:
     """
     Simulation of the Snakes and Ladders game.
     """
-    def __init__(self, layout, circle):
+    def __init__(self, layout, circle, random_start=False):
         """
         Create a Snakes and Ladders game
         :param layout: layout of the game (see project instructions)
@@ -29,6 +29,7 @@ class SnakesAndLaddersSim:
         """
         self.layout = layout
         self.circle = circle
+        self.random_start = random_start
         self.state_space = list(range(1, 16)) # the squares of the game
         self.action_space = [SECURITY_DICE, NORMAL_DICE, RISKY_DICE]
         self.current_state = START_STATE
@@ -39,9 +40,11 @@ class SnakesAndLaddersSim:
         """
         Restart the game
         """
-        start = np.random.randint(14)
-        self.current_state = start
-        return start
+        if self.random_start:
+            self.current_state = np.random.randint(14)
+        else:
+            self.current_state = START_STATE
+        return self.current_state
 
     def movement(self, squares):
         if self.current_state == JUNCTION_STATE: # manage junction

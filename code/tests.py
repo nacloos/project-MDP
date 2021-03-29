@@ -3,7 +3,8 @@ import numpy as np
 from snakes_and_ladders import SnakesAndLaddersProb, SECURITY_DICE, NORMAL_DICE, RISKY_DICE
 import transition_prob
 import simulation
-# from value_iteration import 
+import agent
+import value_iteration
 
 
 layouts = [
@@ -28,7 +29,7 @@ def test_prob(layout, circle, dice):
     # else:
     #     print("Dice not implemented !")
 
-    env = SnakesAndLaddersProb(layout, circle)
+    env = SnakesAndLaddersProb(layout, circle, random_start=True)
     P2 = np.array([env.p(s, dice)[0] for s in range(15)])
 
     P3 = simulation.estimate_prob(layout, circle, dice, n_episodes=int(1e4))
@@ -57,11 +58,28 @@ def test_prob(layout, circle, dice):
     return passed
 
 
-# def test_cost(layout, circle, dice):
-#     C = markovDecision(layout, circle)
+def test_cost(layout, circle, dices=None):
+    C_th, _ = value_iteration.markovDecision(layout, circle, actions=dices)
+
+    if dices == None:
+        pi = agent.OptimalAgent(layout, circle)
+    else:
+        pi = agent.RandomAgent(dices)
+
+    C_sim = simulation.estimate_cost(layout, circle, pi, n_episodes=int(2e4))
+    # C_sim = simulation.estimate_cost_TD(layout, circle, pi, n_episodes=int(2e4))
+
+    passed = np.allclose(C_th, C_sim, atol=0.1)
+    if not passed:
+        print("Not the same expected cost:")
+        print("Th: ", *["{:.2f}".format(c) for c in C_th])
+        print("Sim:", *["{:.2f}".format(c) for c in C_sim])
+    else:
+        print("OK")
+    return passed
 
 
-if __name__ == '__main__':
+def run_prob_tests():
     for i, layout in enumerate(layouts):
         print("===== Test layout {} =====".format(i))
         print("=== Security dice: ")
@@ -88,3 +106,14 @@ if __name__ == '__main__':
         passed = test_prob(layout, True, RISKY_DICE)
         print("OK") if passed else print("FAILED")
         print()
+
+
+if __name__ == '__main__':
+    print("Optimal:")
+    test_cost(layouts[0], False)
+    print("Security:")    
+    test_cost(layouts[0], False, [SECURITY_DICE])    
+    print("Normal:")
+    test_cost(layouts[0], False, [NORMAL_DICE])    
+    print("Riksy:")
+    test_cost(layouts[0], False, [RISKY_DICE])    

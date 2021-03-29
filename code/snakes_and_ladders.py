@@ -24,10 +24,7 @@ class SnakesAndLaddersProb:
     def __init__(self, layout, circle):
         self.layout = layout
         self.circle = circle
-
-        # self.action_space = [SECURITY_DICE]
-        self.action_space = [SECURITY_DICE, NORMAL_DICE]
-        # self.action_space = [SECURITY_DICE, NORMAL_DICE, RISKY_DICE]
+        self.action_space = [SECURITY_DICE, NORMAL_DICE, RISKY_DICE]
         
         self.n_states = len(layout)
         self.R = -np.ones(self.n_states) # reward of -1 for each state excepted the last one

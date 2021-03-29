@@ -1,5 +1,6 @@
 import numpy as np
 
+from value_iteration import markovDecision
 
 class BaseAgent:
 	"""
@@ -38,12 +39,13 @@ class ConstantAgent(BaseAgent):
         return self.action
 
 
-# class OptimalAgent(BaseAgent):
-#     def __init__(self):
-#         markovDecision()
+class OptimalAgent(BaseAgent):
+    def __init__(self, layout, circle):
+        _, self.pi = markovDecision(layout, circle)
 
-#     def select_action(self, state):
-#         pass
+    def select_action(self, state):
+        return self.pi[state]
+        
 
 class QLearningAgent(BaseAgent):
 	def __init__(self):

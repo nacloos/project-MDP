@@ -9,6 +9,8 @@ def estimate_cost(layout, circle, agent, n_episodes=int(1e4)):
     env = SnakesAndLaddersSim(layout, circle)
 
     V = np.zeros(15)
+    # cum_rewards = np.zeros((n_episodes, 15))
+    # counts = np.zeros(15)
 
     for episode in range(1,n_episodes+1):
         visited = np.zeros(15, dtype=np.bool) # true if state already visited in the current episode 
@@ -26,16 +28,46 @@ def estimate_cost(layout, circle, agent, n_episodes=int(1e4)):
             if next_state <= 14 and not visited[next_state]:
                 visited[next_state] = True
 
-            state = next_state                
-        
+            state = next_state              
         V[visited] += 1/episode*(cum_reward[visited] - V[visited])
+        
+        # cum_rewards[episode-1] = cum_reward
+        # counts[visited] += 1  
 
+    # V_est = np.sum(cum_rewards, axis=0) / counts
+    # print(V)
+    # print(V_est)
+    # print(np.allclose(V, V_est))
     C = -V[:-1]
     return C
+
+
+
+# def estimate_cost_TD(layout, circle, agent, n_episodes=int(1e4)):
+#     # TD-learning
+#     env = SnakesAndLaddersSim(layout, circle)
+
+#     V = np.zeros(15)
+#     n_updates = np.ones(15)
+
+#     for episode in range(1,n_episodes+1):
+#         state = env.reset()
+#         done = False
+#         while not done:
+#             action = agent.select_action(state)
+#             next_state, reward, done = env.step(action)
+
+#             V[state] += 1/n_updates[state]*(reward + V[next_state] - V[state])
+#             n_updates[state] += 1
+
+#             state = next_state                
+
+#     C = -V[:-1]
+#     return C
     
 
 def estimate_prob(layout, circle, dice, n_episodes=int(5e3)):
-    env = SnakesAndLaddersSim(layout, circle)
+    env = SnakesAndLaddersSim(layout, circle, random_start=True)
     agent = ConstantAgent(dice)
 
     proba = np.zeros((15, 15))
