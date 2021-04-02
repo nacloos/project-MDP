@@ -66,8 +66,7 @@ def test_cost(layout, circle, dices=None):
     else:
         pi = agent.RandomAgent(dices)
 
-    C_sim = simulation.estimate_cost(layout, circle, pi, n_episodes=int(2e4))
-    # C_sim = simulation.estimate_cost_TD(layout, circle, pi, n_episodes=int(2e4))
+    C_sim = simulation.estimate_cost(layout, circle, pi, n_episodes=int(1e3))
 
     passed = np.allclose(C_th, C_sim, atol=0.1)
     if not passed:

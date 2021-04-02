@@ -3,18 +3,19 @@ from agent import ConstantAgent
 import numpy as np
 
 
-
-def estimate_cost(layout, circle, agent, n_episodes=int(1e4)):
+def estimate_cost(layout, circle, agent, n_episodes=int(1e3), save_steps=None):
     # first-visit monte carlo
     env = SnakesAndLaddersSim(layout, circle)
 
     V = np.zeros(15)
-    # cum_rewards = np.zeros((n_episodes, 15))
-    # counts = np.zeros(15)
+    counts = np.zeros(15)
+    if save_steps is not None:
+        C_save = np.zeros((n_episodes//save_steps+1, 14))
+    # returns = np.zeros((n_episodes, 15))
 
     for episode in range(1,n_episodes+1):
         visited = np.zeros(15, dtype=np.bool) # true if state already visited in the current episode 
-        cum_reward = np.zeros(15) # sum of rewards, starting at state first visit
+        G = np.zeros(15) # sum of rewards, starting at state first visit
 
         state = env.reset()
         visited[state] = True
@@ -24,22 +25,26 @@ def estimate_cost(layout, circle, agent, n_episodes=int(1e4)):
             action = agent.select_action(state)
             next_state, reward, done = env.step(action)
 
-            cum_reward[visited] += reward       
+            G[visited] += reward       
             if next_state <= 14 and not visited[next_state]:
                 visited[next_state] = True
 
             state = next_state              
-        V[visited] += 1/episode*(cum_reward[visited] - V[visited])
+        V[visited] = V[visited] + 1/(counts[visited]+1)*(G[visited] - V[visited])
+        # returns[episode-1] = G
+        counts[visited] += 1  
         
-        # cum_rewards[episode-1] = cum_reward
-        # counts[visited] += 1  
+        if save_steps is not None and episode % save_steps == 0:
+            C_save[episode//save_steps] = -V[:-1]
 
-    # V_est = np.sum(cum_rewards, axis=0) / counts
-    # print(V)
-    # print(V_est)
+
+    # V_est = np.sum(returns, axis=0) / counts
     # print(np.allclose(V, V_est))
     C = -V[:-1]
-    return C
+    if save_steps is not None:
+        return C, C_save
+    else:
+        return C
 
 
 
