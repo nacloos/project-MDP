@@ -52,8 +52,9 @@ if __name__ == '__main__':
     # layout[3] = 2
     # layout[5] = 1
     # layout[10] = 3
-    C = markovDecision(layout, False)
+    C, pi = markovDecision(layout, True)
     print(C)
+    print(pi)
 
 
     # print(print_proba(layout, False))

@@ -5,7 +5,7 @@ import numpy as np
 
 def estimate_cost(layout, circle, agent, n_episodes=int(1e3), save_steps=None):
     # first-visit monte carlo
-    env = SnakesAndLaddersSim(layout, circle)
+    env = SnakesAndLaddersSim(layout, circle, random_start=True)
 
     V = np.zeros(15)
     counts = np.zeros(15)
