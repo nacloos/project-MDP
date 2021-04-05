@@ -21,19 +21,10 @@ layouts = [
 ]
 
 def test_prob(layout, circle, dice):
-    # security dice
-    # if dice == SECURITY_DICE:
-    #     P1 = transition_prob.propTranSec()
-    # elif dice == NORMAL_DICE:
-    #     P1 = transition_prob.propTransNoAct(layout, circle)
-    # else:
-    #     print("Dice not implemented !")
-
     env = SnakesAndLaddersProb(layout, circle, random_start=True)
     P2 = np.array([env.p(s, dice)[0] for s in range(15)])
 
     P3 = simulation.estimate_prob(layout, circle, dice, n_episodes=int(1e4))
-    # P3 = P2
     P1 = P2
 
     passed = True

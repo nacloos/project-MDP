@@ -40,7 +40,7 @@ class SnakesAndLaddersProb:
             P = self.move(s, 2)
             P_trap, r_trap = self.traps(P.copy()) # transition prob if would always trigger traps
             P = P/2 + P_trap/2
-            r = self.R[s]/2 + r_trap/2 # TODO return the expected reward ?
+            r = self.R[s]/2 + r_trap/2
             return P, r
 
         elif a == RISKY_DICE:
@@ -79,7 +79,6 @@ class SnakesAndLaddersProb:
                     P[FINAL_STATE] += 1/(max_steps+1)
                 else:
                     # circle and go over the final state
-                    # P[i-dist_from_final(s)-1] = 1/(max_steps+1) # come back at the beginning
                     P[START_STATE] += 1/(max_steps+1) # come back at the beginning
 
         else:
@@ -127,23 +126,6 @@ class SnakesAndLaddersProb:
                 P += p_temp*1/self.n_states # In-place modification of P !
 
         return P, r
-
-
-# def p_security(s, circle):
-    """
-    Transition probabilty p(s'|s,a), assuming the security dice.
-    """
-    # P = np.zeros(n_states)
-    # if s == JUNCTION_STATE:
-    #     P[s] = 1/2
-    #     P[s+1] = 1/4
-    #     P[FAST_LANE_START] = 1/4
-    # else:
-    #     P[s] = 1/2
-    #     P[s+1] = 1/2
-
-    # return P, R[s]
-
 
 
 

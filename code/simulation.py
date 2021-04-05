@@ -1,6 +1,7 @@
+import numpy as np
+
 from snakes_and_ladders_sim import SnakesAndLaddersSim, SECURITY_DICE, NORMAL_DICE, RISKY_DICE
 from agent import ConstantAgent
-import numpy as np
 
 
 def estimate_cost(layout, circle, agent, n_episodes=int(1e3), save_steps=None):
@@ -46,29 +47,6 @@ def estimate_cost(layout, circle, agent, n_episodes=int(1e3), save_steps=None):
     else:
         return C
 
-
-
-# def estimate_cost_TD(layout, circle, agent, n_episodes=int(1e4)):
-#     # TD-learning
-#     env = SnakesAndLaddersSim(layout, circle)
-
-#     V = np.zeros(15)
-#     n_updates = np.ones(15)
-
-#     for episode in range(1,n_episodes+1):
-#         state = env.reset()
-#         done = False
-#         while not done:
-#             action = agent.select_action(state)
-#             next_state, reward, done = env.step(action)
-
-#             V[state] += 1/n_updates[state]*(reward + V[next_state] - V[state])
-#             n_updates[state] += 1
-
-#             state = next_state                
-
-#     C = -V[:-1]
-#     return C
     
 
 def estimate_prob(layout, circle, dice, n_episodes=int(5e3)):
@@ -89,7 +67,6 @@ def estimate_prob(layout, circle, dice, n_episodes=int(5e3)):
             count[state] += 1
             state = next_state                
 
-    # visited = np.argwhere(count[:-1] != 0)
     proba[:-1] /= count[:-1]
     proba[-1,-1] = 1.0 # state 14 is absorbing
     return proba

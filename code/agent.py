@@ -2,9 +2,10 @@ import numpy as np
 
 from value_iteration import markovDecision
 
+
 class BaseAgent:
 	"""
-	Base agent class specifying the interface of an agent object
+	Base agent class specifying the interface of an agent class
 	"""
 	def __init__(self):
 		pass
@@ -46,16 +47,3 @@ class OptimalAgent(BaseAgent):
     def select_action(self, state):
         return self.pi[state]
         
-
-class QLearningAgent(BaseAgent):
-	def __init__(self):
-		pass
-
-	def select_action(self, state):
-		return None
-
-	def update(self, state, action, reward, next_state):
-		"""
-		Update the value function
-		"""
-		pass

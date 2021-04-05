@@ -1,20 +1,6 @@
 import numpy as np
 
-# define some constants for the game
-START_STATE = 0
-JUNCTION_STATE = 2
-FINAL_STATE = 14
-FAST_LANE_START = 10
-
-SECURITY_DICE = 1
-NORMAL_DICE = 2
-RISKY_DICE = 3
-
-NO_TRAP = 0
-RESTART_TRAP = 1
-PENALTY_TRAP = 2
-PRISON_TRAP = 3
-GAMBLE_TRAP = 4
+from snakes_and_ladders import *
 
 
 class SnakesAndLaddersSim:
@@ -106,33 +92,3 @@ class SnakesAndLaddersSim:
         done = self.current_state >= FINAL_STATE
 
         return self.current_state, self.reward, done
-
-# if __name__ == '__main__':
-#     layout = np.zeros(15)
-#     nb_simulation = 10000
-#     print("Initialization of the game\n")
-#     game = SnakesAndLaddersSim(layout, False)
-#     game.reset()
-#     print("Starting state:", START_STATE,"\n")
-#     game.game(nb_simulation)
-
-
-
-# def game(self, nb_simulation = 100000):
-#     proba = np.zeros((15, 15))
-#     count = np.zeros((15, 1))
-#     tot_reward = np.zeros((15))
-#     for i in range(nb_simulation):
-#         while self.current_state != FINAL_STATE:
-#             previous_state = self.current_state
-#             current_state, reward, done = self.step(SECURITY_DICE)
-#             # tot_reward[i] += self.reward
-#             proba[previous_state, self.current_state] += 1
-#             count[previous_state] += 1
-#             # count += 1
-#             # print("Current state:", self.current_state)
-#         self.reset()
-#     proba /= count
-#     print(proba)
-#     print(proba[2, 10])
-#     print(proba[2, 2])

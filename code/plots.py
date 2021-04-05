@@ -12,11 +12,11 @@ from graphics import plot_policy
 colors = ["#e07a5f","#3d405b","#f2cc8f", "#83bcff", "#81b29a"]
 
 
-def plot_cost(layout, circle, legend=True):
+def plot_cost(layout, circle, legend=True, title=None):
     agents = [OptimalAgent(layout, circle), ConstantAgent(SECURITY_DICE), ConstantAgent(NORMAL_DICE),
               ConstantAgent(RISKY_DICE), RandomAgent([SECURITY_DICE, NORMAL_DICE, RISKY_DICE])]
     labels = ["Optimal", "Security dice", "Normal dice", "Risky dice", "Random"]
-    costs = [estimate_cost(layout, circle, pi) for pi in agents]
+    costs = [estimate_cost(layout, circle, pi, n_episodes=1000) for pi in agents]
     states = np.arange(14)+1
 
 
@@ -37,6 +37,7 @@ def plot_cost(layout, circle, legend=True):
     ax.spines['top'].set_visible(False) 
     ax.yaxis.set_ticks_position('left')
     ax.xaxis.set_ticks_position('bottom')
+    plt.title(title)
     plt.show()
 
 
@@ -98,11 +99,11 @@ def plot_policies(layouts, circles):
 
 
 if __name__ == '__main__':
-    # plot_cst_dice()
+    plot_cst_dice()
 
     layouts = np.zeros((2, 15), dtype=np.int)
     circles = [False, True]
-    # plot_policies(layouts, circles)
+    plot_policies(layouts, circles)
 
 
     layouts = [
@@ -112,7 +113,7 @@ if __name__ == '__main__':
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 0, 0, 0, 0, 0]
     ]
     circles = [False]*4
-    # plot_policies(layouts, circles)
+    plot_policies(layouts, circles)
 
 
     layouts = [
@@ -123,4 +124,4 @@ if __name__ == '__main__':
     plot_policies(layouts, circles)
 
     for i, layout in enumerate(layouts):
-        plot_cost(layout, circles[i], legend=True if i == 0 else False)
+        plot_cost(layout, circles[i], legend=True if i == 0 else False, title="Config {}".format(i+1))

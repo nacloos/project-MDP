@@ -4,9 +4,15 @@ from snakes_and_ladders import SnakesAndLaddersProb
 
 
 def markovDecision(layout, circle, actions=None, tol=1e-9):
+    """
+        actions: set of possible actions, 
+        e.g. if actions = [NORMAL_DICE] compute the value of a constant normal dice policy,
+        if actions = None, compute the optimal value function considering the three dices.
+    """
+    # create a game environment
     env = SnakesAndLaddersProb(layout, circle)
     if not actions:
-        actions = env.action_space
+        actions = env.action_space # consider the three dices
     n_states = len(layout)
     V = np.zeros(n_states)
 
@@ -41,20 +47,12 @@ def markovDecision(layout, circle, actions=None, tol=1e-9):
     return expec, opt_policy
 
 
-def print_proba(layout, circle):
-    env = SnakesAndLaddersProb(layout, circle)
-
-    for s in range(15):
-        print(*env.p(s, 2)[0])
 
 if __name__ == '__main__':
     layout = np.zeros(15)
-    # layout[3] = 2
-    # layout[5] = 1
-    # layout[10] = 3
-    C, pi = markovDecision(layout, True)
-    print(C)
-    print(pi)
+    layout[9] = 1
+    circle = False 
+    C, pi = markovDecision(layout, circle)
+    print(C[:10], C[10:])
+    print(pi[:10], pi[10:])
 
-
-    # print(print_proba(layout, False))
