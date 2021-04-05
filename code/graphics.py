@@ -16,7 +16,8 @@ dice_label = {
 }
 
 
-traps_color = [None, "#555b6e", "#A7C7E7", "#bee3db", "#ffd6ba"]
+# traps_color = [None, "#555b6e", "#A7C7E7", "#bee3db", "#ffd6ba"]
+traps_color = [None, "#555b6e", "tab:blue", "tab:green", "tab:orange"]
 traps_label = [None, "Restart", "Penalty", "Prison", "Gamble"]
 
 
